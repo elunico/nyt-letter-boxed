@@ -1,13 +1,14 @@
 from typing import Optional
 
 from tecoradors import stringable
+
 from node import Node
 
 
 @stringable
 class Graph:
     def __init__(self) -> None:
-        self.nodes = {}
+        self.nodes: dict[str, Node] = {}
 
     def create(self, ltr: str):
         self.nodes[ltr] = Node(ltr)
@@ -15,10 +16,6 @@ class Graph:
     def reset(self):
         for node in self.nodes.values():
             node.reset()
-
-    def prioritize(self):
-        for i in self.nodes.values():
-            i.prioritize()
 
     def satisfied(self):
         return all(i.used for i in self.nodes.values())
@@ -37,7 +34,7 @@ class Graph:
             raise
 
     def accepts(self, word: str, index: int = 0, starting: Optional[str] = None,
-                 remaining: Optional[str] = None) -> bool:
+                remaining: Optional[str] = None) -> bool:
         def connected(word, index=0, starting=None, remaining=None):
             if starting is not None and word[0] != starting:
                 return False

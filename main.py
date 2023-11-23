@@ -11,8 +11,10 @@ class NoMoreBacktrackingError(ValueError):
 def uniqueness(word):
     return len(set(word))
 
+
 def nullout(*args, **kwargs):
     pass
+
 
 def main():
     # graph = Graph.fromstring('jcp:aoe:irh:fbt')
@@ -28,8 +30,6 @@ def main():
         words.remove(i)
 
     shortest_words = [None] * 100
-    shortest_count = None
-    shortest_both = None
 
     while True:
         try:
@@ -45,8 +45,7 @@ def main():
             break
 
 
-
-def find_chain(graph, words, output=print):
+def find_chain(graph: 'Graph', words: list[str], output=print):
     chain_breakers: set[str] = set()
     chain: list[str] = []
     while not graph.satisfied():
@@ -71,19 +70,16 @@ def find_chain(graph, words, output=print):
             for letter in backer:
                 if not any(letter in w for w in chain):
                     graph.nodes[letter].used = False
-                    graph.nodes[letter].more_important()
+                    graph.nodes[letter].prioritize()
         else:
             candidate = acceptables.pop()
             output("Testing highest priority word: {}...".format(candidate))
-            # if candidate in chain_breakers:
-            #     output("Chainbreaker! restarting...")
-            #     continue
             for letter in candidate:
                 graph.nodes[letter].used = True
-                graph.nodes[letter].less_important()
+                graph.nodes[letter].deprioritize()
             for node in graph.nodes.values():
                 if node.letter not in candidate:
-                    node.more_important()
+                    node.prioritize()
             chain.append(candidate)
     output("\nSOLVED! Chain is '{}'".format('->'.join(chain)))
     output("Trying to optimize...")

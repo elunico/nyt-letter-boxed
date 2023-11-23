@@ -5,14 +5,11 @@ class Node:
         self.priority: int = 1
         self.used: bool = False
 
-    def more_important(self):
+    def prioritize(self):
         self.priority += 10  # priority is 10x more important than length
 
-    def less_important(self):
+    def deprioritize(self):
         self.priority -= 10  # priority is 10x more important than length
-
-    def prioritize(self):
-        self.connections.sort(key=lambda n: n.priority)
 
     def connect(self, other: 'Node'):
         self.connections.append(other)
